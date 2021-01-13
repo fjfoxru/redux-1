@@ -3,13 +3,60 @@ import {
   FETCH_SERVICES_REQUEST,
   FETCH_SERVICES_FAILURE,
   FETCH_SERVICES_SUCCESS,
-  ADD_SERVICE_REQUEST,
-  ADD_SERVICE_FAILURE,
-  ADD_SERVICE_SUCCESS,
+  FETCH_SERVICE_ITEM_REQUEST,
+  FETCH_SERVICE_ITEM_FAILURE,
+  FETCH_SERVICE_ITEM_SUCCESS,
   REMOVE_SERVICE_REQUEST,
   REMOVE_SERVICE_FAILURE,
   REMOVE_SERVICE_SUCCESS,
+  ADD_SERVICE_REQUEST,
+  ADD_SERVICE_FAILURE,
+  ADD_SERVICE_SUCCESS,
+  SAVE_EDITED_SERVICE_ITEM_REQUEST,
+  SAVE_EDITED_SERVICE_ITEM_FAILURE,
+  SAVE_EDITED_SERVICE_ITEM_SUCCESS,
 } from './actionTypes';
+
+
+export const saveEditedServiceItemRequest = () => ({
+  type: SAVE_EDITED_SERVICE_ITEM_REQUEST,
+});
+
+export const saveEditedServiceItemFailure = error => ({
+  type: SAVE_EDITED_SERVICE_ITEM_FAILURE,
+  payload: {
+    error,
+  },
+});
+
+export const saveEditedServiceItemSuccess = item => ({
+  type: SAVE_EDITED_SERVICE_ITEM_SUCCESS,
+  payload: {
+    item,
+  },
+});
+
+
+
+
+export const fetchServiceItemRequest = () => ({
+  type: FETCH_SERVICE_ITEM_REQUEST,
+});
+
+export const fetchServiceItemFailure = error => ({
+  type: FETCH_SERVICE_ITEM_FAILURE,
+  payload: {
+    error,
+  },
+});
+
+export const fetchServiceItemSuccess = item => ({
+  type: FETCH_SERVICE_ITEM_SUCCESS,
+  payload: {
+    item,
+  },
+});
+
 
 export const fetchServicesRequest = () => ({
   type: FETCH_SERVICES_REQUEST,
@@ -97,6 +144,28 @@ export const fetchServices = async dispatch => {
   }
 }
 
+
+export const fetchServiceItem = async (dispatch, id) => {
+  dispatch(fetchServiceItemRequest());
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/${id}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    const data = await response.json();
+    console.log(data);
+    dispatch(fetchServiceItemSuccess(data));
+  } catch (e) {
+    dispatch(fetchServiceItemFailure(e.message));
+  }
+}
+
+
+
+
 export const addService = async (dispatch, name, price) => {
   dispatch(addServiceRequest());
   try {
@@ -111,6 +180,24 @@ export const addService = async (dispatch, name, price) => {
     dispatch(addServiceSuccess());
   } catch (e) {
     dispatch(addServiceFailure(e.message));
+  }
+  fetchServices(dispatch);
+}
+
+export const saveEditedServiceItem = async (dispatch, item) => {
+  dispatch(saveEditedServiceItemRequest());
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item),
+    })
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    dispatch(saveEditedServiceItemSuccess());
+  } catch (e) {
+    dispatch(saveEditedServiceItemFailure(e.message));
   }
   fetchServices(dispatch);
 }

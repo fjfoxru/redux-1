@@ -9,7 +9,7 @@ function App() {
       <Redirect from="/" to="/services"/>
       <Switch>
         <Route path="/services/:id" component={ServiceItem}/>
-        <Route path="/" component={Services}/>
+        <Route path="/services" component={Services}/>
       </Switch>
     </Router>
   );
