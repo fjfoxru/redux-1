@@ -26,9 +26,13 @@ import {
           error,
         };
       case SAVE_EDITED_SERVICE_ITEM_SUCCESS:
-        return {...initialState};
+        return {
+          ...initialState,
+        };
       default:
-        return state;
+        return {
+          ...state,
+        }
     }
   }
   

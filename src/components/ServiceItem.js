@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useHistory } from 'react'
+import React, { useState, useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
 import { fetchServiceItem } from '../actions/actionCreators';
@@ -12,7 +12,6 @@ function ServiceItem({match}) {
     const [price, setPrice] = useState('');
     const [content, setContent] = useState('');
     const dispatch = useDispatch();
-    // const history = useHistory();
 
     useEffect(() => {
         fetchServiceItem(dispatch, match.params.id)
@@ -27,7 +26,6 @@ function ServiceItem({match}) {
 
       const handleChange = evt => {
         const {name, value} = evt.target;
-        console.log(value);
         if (name === 'inputName') setName(value);
         if (name === 'inputPrice') setPrice(value);
         if (name === 'inputAbout') setContent(value);
@@ -35,7 +33,7 @@ function ServiceItem({match}) {
 
       const handleSubmit = evt => {
         evt.preventDefault();
-        saveEditedServiceItem(dispatch, item);
+        saveEditedServiceItem(dispatch, {id: item.id, name, price, content });
       }
 
 
@@ -72,7 +70,7 @@ function ServiceItem({match}) {
             <Button variant="primary" type="submit">
                 Сохранить
             </Button>
-            {/* <Link to={history.goBack}></Link>     */}
+            <Link to={'/services'}>Отмена</Link>    
             
     </Form>
         </div>
