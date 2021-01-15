@@ -1,11 +1,12 @@
 import {
+    CHANGE_SERVICE_EDIT_FIELD,
     FETCH_SERVICE_ITEM_REQUEST,
     FETCH_SERVICE_ITEM_FAILURE,
     FETCH_SERVICE_ITEM_SUCCESS,
   } from '../actions/actionTypes'
   
   const initialState = {
-    item: {},
+    item: { name: '', price: '', content: ''},
     loading: false,
     error: null,
   };
@@ -33,6 +34,15 @@ import {
           loading: false,
           error: null,
         };
+      case CHANGE_SERVICE_EDIT_FIELD:
+          const { name, value } = action.payload;
+          return {
+            ...state,
+            item: {
+              ...state.item,
+              [name]: value,
+            }
+          };  
       default:
         return state;
     }

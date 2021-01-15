@@ -15,6 +15,8 @@ import {
   SAVE_EDITED_SERVICE_ITEM_REQUEST,
   SAVE_EDITED_SERVICE_ITEM_FAILURE,
   SAVE_EDITED_SERVICE_ITEM_SUCCESS,
+  CHANGE_SERVICE_EDIT_FIELD,
+  CHANGE_SERVICE_CLEAR
 } from './actionTypes';
 
 
@@ -33,6 +35,15 @@ export const saveEditedServiceItemSuccess = item => ({
   type: SAVE_EDITED_SERVICE_ITEM_SUCCESS,
   payload: {
     item,
+  },
+});
+
+
+
+export const changeServiceClear = item => ({
+  type: CHANGE_SERVICE_CLEAR,
+  payload: {
+    
   },
 });
 
@@ -103,6 +114,15 @@ export const changeServiceField = (name, value) => ({
   },
 });
 
+export const changeServiceEditField = (name, value) => (
+  {
+  type: CHANGE_SERVICE_EDIT_FIELD,
+  payload: {
+    name,
+    value,
+  },
+});
+
 
 export const removeServiceRequest = (id) => ({
   type: REMOVE_SERVICE_REQUEST,
@@ -137,7 +157,6 @@ export const fetchServices = async dispatch => {
       throw new Error(response.statusText);
     }
     const data = await response.json();
-    console.log(data);
     dispatch(fetchServicesSuccess(data));
   } catch (e) {
     dispatch(fetchServicesFailure(e.message));
@@ -156,7 +175,6 @@ export const fetchServiceItem = async (dispatch, id) => {
       throw new Error(response.statusText);
     }
     const data = await response.json();
-    console.log(data);
     dispatch(fetchServiceItemSuccess(data));
   } catch (e) {
     dispatch(fetchServiceItemFailure(e.message));

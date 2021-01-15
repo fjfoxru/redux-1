@@ -1,13 +1,14 @@
 import {
+    CHANGE_SERVICE_CLEAR,
     SAVE_EDITED_SERVICE_ITEM_REQUEST,
     SAVE_EDITED_SERVICE_ITEM_FAILURE,
     SAVE_EDITED_SERVICE_ITEM_SUCCESS,
   } from '../actions/actionTypes'
   
   const initialState = {
-    item: {},
     loading: false,
     error: null,
+    saved: false,
   };
   
   export default function serviceSaveItemEdited(state = initialState, action) {
@@ -28,7 +29,13 @@ import {
       case SAVE_EDITED_SERVICE_ITEM_SUCCESS:
         return {
           ...initialState,
+          saved: true,
         };
+      case CHANGE_SERVICE_CLEAR:
+          return {
+            ...initialState,
+          saved: false,
+          };  
       default:
         return {
           ...state,
